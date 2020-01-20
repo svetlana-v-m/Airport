@@ -1,0 +1,132 @@
+﻿<Window x:Class="AirwaysWithEF.Views.AddFlight"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:behaviors="clr-namespace:WPFTextBoxAutoComplete;assembly=WPFTextBoxAutoComplete"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:local="clr-namespace:AirwaysWithEF.Views"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="Add Flight" Height="450" Width="500"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style TargetType="DatePicker">
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style TargetType="DataGrid">
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition />
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        
+        <!--#region Grid.Row 0-->
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Choose a trip from list to set new flight or:" Margin="5"/>
+            <Button Content="Create new trip" Height="26" Padding="3" Command="{Binding CreateNewTripCommand}"/>
+            <TextBox Text="{Binding SearchText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="105" Height="23" Margin="5" VerticalContentAlignment="Center">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="GotFocus">
+                        <i:InvokeCommandAction Command="{Binding Path=DataContext.SearchTextBoxGotFocusCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TextBox}}}"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="LostFocus">
+                        <i:InvokeCommandAction Command="{Binding Path=DataContext.SearchTextBoxLostFocusCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TextBox}}}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+        </StackPanel>
+        <!--#endregion-->
+        
+        <!--#region Grid.Row 1-->
+            <DataGrid x:Name="TripsDG"
+                ItemsSource="{Binding Trips,UpdateSourceTrigger=PropertyChanged}" 
+                SelectedItem="{Binding SelectedTrip,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                AutoGenerateColumns="False" 
+                SelectionMode="Single" SelectionUnit="FullRow"
+                IsReadOnly="True" Grid.Row="1">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="Medium"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add trip" Command="{Binding CreateNewTripCommand}"/>
+                    <MenuItem Header="Edit trip" Command="{Binding EditTripCommand}"/>
+                    <MenuItem Header="Delete trip" Command="{Binding DeleteTripCommand}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Trip number" Binding="{Binding Path=TripNumber}" FontSize="14"/>
+                <DataGridTextColumn Header="Plane" Binding="{Binding Path=Plane}" FontSize="14"/>
+                <DataGridTextColumn Header="Company" Binding="{Binding Path=AirwayCompany.name}" FontSize="14"/>
+                <DataGridTextColumn Header="Dep from" Binding="{Binding Path=TownFrom}" FontSize="14"/>
+                <DataGridTextColumn Header="Dep at" Binding="{Binding Path=DepTimeString}" FontSize="14"/>
+                <DataGridTextColumn Header="Arr to" Binding="{Binding Path=TownTo}" FontSize="14"/>
+                <DataGridTextColumn Header="Arr at" Binding="{Binding Path=ArrTimeString}" FontSize="14"/>
+                <DataGridCheckBoxColumn Header="Return trip" Binding="{Binding Path=ReturnTripBool}" IsReadOnly="True" IsThreeState="False"/>
+                <DataGridTextColumn Header="Return trip N" Binding="{Binding Path=ReturnTripN}"/>
+            </DataGrid.Columns>
+            </DataGrid>
+        
+        <!--#endregion-->
+
+        <!--#region Grid.Row 2-->
+        <Label Content="{Binding SelectedTripLabel}" Grid.ColumnSpan="2" Grid.Row="2"/>
+        <!--#endregion-->
+        
+        <!--#region Grid.Row 3-->
+
+        <Grid Grid.Row="3" IsEnabled="{Binding SetNewFlightDataIsEnabled}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Margin="10,0,10,0" Width="200" HorizontalAlignment="Left" Grid.Column="0">
+                <Label Content="Enter date:"/>
+                <DatePicker AllowDrop="True" SelectedDate="{Binding SelectedDate}"/>
+                <StackPanel Margin="10,5">
+                    <Button Content="Add Passenger" Margin="3" Padding="3" VerticalContentAlignment="Center" FontStyle="Normal" Command="{Binding AddPassengerCommand}"/>
+                    <Button Content="Edit Passenger Data" Margin="3" Padding="3" VerticalContentAlignment="Center" FontStyle="Normal" Command="{Binding EditPassengerDataCommand}"/>
+                    <Button Content="Delete Passenger" Margin="3" Padding="3" VerticalContentAlignment="Center" FontStyle="Normal" Command="{Binding DeletePassengerCommand}"/>
+                </StackPanel>
+            </StackPanel>
+            <DataGrid ItemsSource="{Binding Passengers, UpdateSourceTrigger=PropertyChanged}" 
+                      Grid.Column="1"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      FontStyle="Normal"
+                      SelectedItem="{Binding SelectedPassenger}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Passenger Name" Binding="{Binding PassengerName}"/>
+                    <DataGridTextColumn Header="Seat Number" Binding="{Binding SeatNumber}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <!--#endregion-->
+        
+        <!--#region Grid.Row 4-->
+        <DockPanel Margin="10,5" Grid.Row="4">
+            <Button Content="Cancel" CommandParameter="Cancel" DockPanel.Dock="Left" HorizontalAlignment="Left" Width="70" Height="30" Click="OnCancel_Click"/>
+            <Button Content="Save" CommandParameter="Save" Command="{Binding SaveCommand}" DockPanel.Dock="Right" Width="70" Height="30" HorizontalAlignment="Right" Click="OnSave_Click"/>
+        </DockPanel>
+        <!--#endregion-->
+        
+    </Grid>
+</Window>
