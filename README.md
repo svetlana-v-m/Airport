@@ -7,7 +7,11 @@ There are Models, Views and ViewModels.
 #DAL project
 This project contains instructions on interacting with data base.
 # Data base
-Data base containts of 4 tables:Company, Trip, Passenger, Pass_in_trip.
+Data base containts of 4 tables:
+-Company, 
+-Trip, 
+-Passenger, 
+-Pass_in_trip.
 Table Company contains airway companies list. 
 Table Trip contains trips list and connected with Company table by foreign key.
 Table Passenger contains passengers list.
