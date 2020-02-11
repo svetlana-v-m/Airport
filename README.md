@@ -1,12 +1,12 @@
 # Airport 
-***RU*** Клиент для базы данных SQL, построенный на .NET Framework с испльзованием Entity framework, подход - DataBaseFirst.
+***RU*** Клиент для базы данных SQL, построенный на .NET Framework с испльзованием Entity Framework, подход - DataBaseFirst.
 В сборке два проекта: AirwaysWithEF и DAL.
 
 ***EN*** Simple client for simple airport database made with Entity Framework data-base first approach.
 There are two projects in assembly: AirwaysWithEF and DAL.
 
 ## AirwaysWithEF project
-***RU*** Этот проект содержит всю бизнес-логику, построен с применением паттерна MVVM и сдоержит традиционнно для этого подхода Models, ViewModels, Views.
+***RU*** Этот проект содержит всю бизнес-логику, построен с применением паттерна MVVM и содержит традиционнно для этого подхода Models, ViewModels, Views.
 
 ***EN*** This project contains business logic and built with MVVM approach.
 There are Models, Views and ViewModels.
@@ -34,10 +34,10 @@ There are Models, Views and ViewModels.
 1. Просмотр всех прилетов и отлетов в базе данных, либо для выбранного города/компании.
 2. Добавление, редактирование списка пассажиров рейса.
 3. Добавление нового рейса с использованием данных о существующих в базе данных рейсах.
-4. Дбавление нового шаблона полета с последующим созданием рейса на основе этого шаблона.
+4. Добавление нового шаблона полета с последующим созданием рейса на основе этого шаблона.
 
 ***EN***
 1. Observe all arrivals and departures in data base or for selected city or company.
 2. Add new passenger, edit passenger data or delete passenger in existing flight.
-3. Add new flight based on existing in data base trips.
-4. Add new trip and then add new flight based on this trip.
+3. Add new flight based on existing one in data base trips.
+4. Add new trip template and then add new flight based on this trip template.
